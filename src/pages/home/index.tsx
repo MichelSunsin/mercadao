@@ -18,14 +18,23 @@ function Home() {
   };
 
   const fetchProducts = async () => {
-    const response = await axios.get('http://localhost:3000/products');
+    let url = `http://localhost:3000/products?name_like=${search}`;
+
+    if (selectedCategory !== null) {
+      url += `&categories_like=${selectedCategory}`;
+    }
+
+    const response = await axios.get(url);
     setProducts(response.data);
   };
 
   useEffect(() => {
     fetchCategories();
-    fetchProducts();
   }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [search, selectedCategory]);
 
   return (
     <div className="home-container">

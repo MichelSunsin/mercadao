@@ -54,7 +54,16 @@
   }
 
   .product-listing {
+    display: grid;
     grid-area: main;
+    grid-template-rows: minmax(200px, 200px);
+    grid-template-columns: repeat(auto-fill, 200px);
+    gap: 10px;
+    padding: 10px;
     background-color: white;
+
+    .product-card {
+      background-color: $color-primary-200;
+    }
   }
 }

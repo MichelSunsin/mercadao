@@ -9,7 +9,7 @@ import authReducer from './authReducer';
 const AuthProvider = ({ children }: any) => {
   const initialState: TAuthProvider = {
     loading: false,
-    loginToken: null,
+    loginToken: '123',
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);

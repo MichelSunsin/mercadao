@@ -34,7 +34,7 @@ function Login() {
       {stage === 'buy' && (
         <div className="form-container">
           <h2 className="align-left">Cadastro de cliente</h2>
-          <form id="form" onSubmit={handleSubmit(onSubmit)}>
+          <form id="form-buy" onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="firstName">Nome</label>
             <input
               type="text"
@@ -93,7 +93,7 @@ function Login() {
             <Button secondary onClick={() => setStage('initial')}>
               Voltar
             </Button>
-            <Button type="submit" form="form">
+            <Button type="submit" form="form-buy">
               Cadastrar
             </Button>
           </div>
@@ -105,6 +105,27 @@ function Login() {
           <div className="buttons-container-rows">
             <Button onClick={() => setStage('initial')}>Voltar</Button>
             <Button>Cadastrar</Button>
+          </div>
+        </div>
+      )}
+      {stage === 'login' && (
+        <div className="form-container">
+          <h2 className="align-left">Login</h2>
+          <form id="form-login" onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor="user">Usuário</label>
+            <input type="text" className="mrc-input" {...register('user')} />
+            <label htmlFor="passwrod">Senha</label>
+            <input
+              type="password"
+              className="mrc-input"
+              {...register('password')}
+            />
+          </form>
+          <div className="buttons-container-rows">
+            <Button secondary onClick={() => setStage('initial')}>
+              Voltar
+            </Button>
+            <Button>Login</Button>
           </div>
         </div>
       )}

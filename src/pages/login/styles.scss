@@ -1,0 +1,36 @@
+@import '~/src/styles/variables.scss';
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  h2.align-left {
+    text-align: start;
+  }
+
+  .buttons-container-columns {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 12px;
+
+    > button + button {
+      margin-top: 12px;
+    }
+  }
+
+  .span-footer {
+    margin-bottom: 12px;
+  }
+
+  .buttons-container-rows {
+    display: flex;
+    justify-content: end;
+    padding-bottom: 12px;
+
+    > button + button {
+      margin-left: 12px;
+    }
+  }
+}

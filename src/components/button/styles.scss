@@ -1,5 +1,16 @@
 @import '~/src/styles/variables.scss';
 
 .mrc-button {
-  background-color: $color-primary-100;
+  background-color: $color-secondary-200;
+  color: white;
+  min-height: 20px;
+
+  &.secondary {
+    background-color: white;
+    color: $color-secondary-200;
+
+    &:hover {
+      border-color: $color-secondary-200;
+    }
+  }
 }

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { Button } from 'components';
+import Buyer from './Buyer';
+import Seller from './Seller';
 
 import './styles.scss';
 
@@ -9,6 +12,8 @@ type TStage = 'initial' | 'login' | 'buy' | 'sell';
 function Login() {
   const [stage, setStage] = useState<TStage>('initial');
   const { register, handleSubmit } = useForm();
+
+  const handleReturnToInitialPage = () => setStage('initial');
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -32,81 +37,10 @@ function Login() {
         </div>
       )}
       {stage === 'buy' && (
-        <div className="form-container">
-          <h2 className="align-left">Cadastro de cliente</h2>
-          <form id="form-buy" onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="firstName">Nome</label>
-            <input
-              type="text"
-              className="mrc-input"
-              placeholder="Ex: Fulano"
-              {...register('firstName')}
-            />
-
-            <label htmlFor="lastName">Sobrenome</label>
-            <input
-              type="text"
-              className="mrc-input"
-              placeholder="Ex: da Silva"
-              {...register('lastName')}
-            />
-
-            <label htmlFor="CPF">CPF</label>
-            <input
-              type="text"
-              className="mrc-input"
-              placeholder="Ex: 22233344455"
-              {...register('CPF')}
-            />
-
-            <label htmlFor="birthdate">Data de nascimento</label>
-            <input
-              type="text"
-              className="mrc-input"
-              placeholder="Ex: 06/12/2022"
-              {...register('birthdate')}
-            />
-
-            <label htmlFor="">Endereço de entrega (completo)</label>
-            <input
-              type="text"
-              className="mrc-input"
-              placeholder="Ex: Rua dos Ipês, 10. Bairro das Oliveiras"
-              {...register('address')}
-            />
-
-            <label htmlFor="">Senha</label>
-            <input
-              type="password"
-              className="mrc-input"
-              {...register('password')}
-            />
-
-            <label htmlFor="">Confirmar senha</label>
-            <input
-              type="password"
-              className="mrc-input"
-              {...register('passwordConfirm')}
-            />
-          </form>
-          <div className="buttons-container-rows">
-            <Button secondary onClick={() => setStage('initial')}>
-              Voltar
-            </Button>
-            <Button type="submit" form="form-buy">
-              Cadastrar
-            </Button>
-          </div>
-        </div>
+        <Buyer handleReturnToInitialPage={handleReturnToInitialPage} />
       )}
       {stage === 'sell' && (
-        <div className="form-container">
-          <h2 className="align-left">Cadastro de prestador de serviço</h2>
-          <div className="buttons-container-rows">
-            <Button onClick={() => setStage('initial')}>Voltar</Button>
-            <Button>Cadastrar</Button>
-          </div>
-        </div>
+        <Seller handleReturnToInitialPage={handleReturnToInitialPage} />
       )}
       {stage === 'login' && (
         <div className="form-container">

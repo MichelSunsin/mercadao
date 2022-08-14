@@ -25,6 +25,10 @@
         color: white;
         font-size: 32px;
         background-color: inherit;
+
+        & + button {
+          margin-left: 5px;
+        }
       }
     }
   }
@@ -42,6 +46,8 @@
 
     input {
       border: 1px solid #c7c7c7;
+      margin-bottom: 15px;
+      color: black;
     }
 
     button {
@@ -49,6 +55,7 @@
       background-color: transparent;
       padding: 8px;
       border: 1px solid #ccc;
+      color: $color-secondary-200;
       cursor: pointer;
 
       &:hover {

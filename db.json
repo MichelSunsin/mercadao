@@ -1,0 +1,87 @@
+{
+  "products": [
+    {
+      "id": 0,
+      "name": "Produto 1",
+      "price": 2.5,
+      "categories": [0]
+    },
+    {
+      "id": 1,
+      "name": "Produto 2",
+      "price": 5.2,
+      "categories": [0]
+    },
+    {
+      "id": 2,
+      "name": "Produto 3",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 3,
+      "name": "Produto 4",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 4,
+      "name": "Produto 5",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 5,
+      "name": "Produto 6",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 6,
+      "name": "Produto 7",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 7,
+      "name": "Produto 8",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 8,
+      "name": "Produto 9",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 9,
+      "name": "Produto 10",
+      "price": 10,
+      "categories": [0, 1]
+    },
+    {
+      "id": 10,
+      "name": "Produto 11",
+      "price": 10,
+      "categories": [2]
+    }
+  ],
+  "categories": [
+    {
+      "id": 0,
+      "description": "Categoria 1"
+    },
+    {
+      "id": 1,
+      "description": "Categoria 2"
+    },
+    {
+      "id": 2,
+      "description": "Categoria 3"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

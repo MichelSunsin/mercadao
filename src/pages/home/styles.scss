@@ -1,3 +1,78 @@
+@import '../../styles/variables';
+
 .home-container {
   display: grid;
+  grid-template-areas:
+    'head head'
+    'nav main';
+  grid-template-columns: 200px minmax(0, 1fr);
+  grid-template-rows: 80px 1fr;
+  height: 100vh;
+  color: white;
+
+  .header {
+    grid-area: head;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-secondary-200;
+    padding: 20px;
+
+    .align-right {
+      button {
+        cursor: pointer;
+        border: none;
+        color: white;
+        font-size: 32px;
+        background-color: inherit;
+      }
+    }
+  }
+
+  .sidenav {
+    grid-area: nav;
+    padding: 10px;
+    background-color: white;
+    max-width: 200px;
+
+    h3 {
+      color: black;
+      text-align: center;
+    }
+
+    input {
+      border: 1px solid #c7c7c7;
+    }
+
+    button {
+      width: 100%;
+      background-color: transparent;
+      padding: 8px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+
+      &:hover {
+        border-color: $color-primary-200;
+      }
+
+      &.active {
+        background-color: $color-primary-200;
+        color: white;
+      }
+
+      & + button {
+        margin-top: 2px;
+      }
+    }
+  }
+
+  .product-listing {
+    display: grid;
+    grid-area: main;
+    grid-auto-rows: max-content;
+    grid-template-columns: repeat(auto-fill, 200px);
+    gap: 20px;
+    padding: 10px;
+    background-color: white;
+  }
 }

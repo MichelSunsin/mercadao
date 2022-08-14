@@ -1,9 +1,17 @@
 @import '~/src/styles/variables.scss';
 
 .mrc-button {
+  cursor: pointer;
+  border: 1px solid $color-secondary-200;
+  border-radius: 5px;
   background-color: $color-secondary-200;
   color: white;
-  min-height: 20px;
+  padding: 10px;
+  font-size: 16px;
+
+  &:hover {
+    border-color: white;
+  }
 
   &.secondary {
     background-color: white;

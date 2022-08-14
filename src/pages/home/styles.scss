@@ -12,8 +12,21 @@
 
   .header {
     grid-area: head;
-    background-color: $color-primary-200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-secondary-200;
     padding: 20px;
+
+    .align-right {
+      button {
+        cursor: pointer;
+        border: none;
+        color: white;
+        font-size: 32px;
+        background-color: inherit;
+      }
+    }
   }
 
   .sidenav {
@@ -58,12 +71,8 @@
     grid-area: main;
     grid-auto-rows: max-content;
     grid-template-columns: repeat(auto-fill, 200px);
-    gap: 10px;
+    gap: 20px;
     padding: 10px;
     background-color: white;
-
-    .product-card {
-      background-color: $color-primary-200;
-    }
   }
 }

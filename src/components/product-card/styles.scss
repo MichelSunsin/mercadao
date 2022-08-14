@@ -1,0 +1,35 @@
+@import '~/src/styles/variables.scss';
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $color-primary-200;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 5px $color-secondary-200;
+
+  svg.product-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  svg.add-to-cart {
+    width: 25px;
+    height: 25px;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  .product-info {
+    align-self: flex-start;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 5px 0px;
+  }
+}

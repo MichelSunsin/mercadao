@@ -6,5 +6,6 @@ export type TCategory = {
 export type TProduct = {
   id: number;
   name: string;
-  category: number;
+  price: number;
+  categories: TCategory[];
 };

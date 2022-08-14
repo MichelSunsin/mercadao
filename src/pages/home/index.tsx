@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FiLogOut } from 'react-icons/fi';
+
+import { ProductCard } from 'components';
 import type { TCategory, TProduct } from 'types/models.type';
 
 import './styles.scss';
 
 function Home() {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState('');
 
   const [categories, setCategories] = useState<TCategory[]>([]);
@@ -38,7 +44,14 @@ function Home() {
 
   return (
     <div className="home-container">
-      <div className="header">Mercadão de Garça</div>
+      <div className="header">
+        <div className="align-left">Mercadão de Garça</div>
+        <div className="align-right">
+          <button type="button" onClick={() => navigate('/login')}>
+            <FiLogOut />
+          </button>
+        </div>
+      </div>
       <div className="sidenav">
         <input
           className="mrc-input"
@@ -49,6 +62,7 @@ function Home() {
         <h3>Categorias</h3>
         {categories.map((category) => (
           <button
+            key={category.id}
             type="button"
             className={`${selectedCategory === category.id ? 'active' : ''}`}
             onClick={() => setSelectedCategory(category.id)}
@@ -59,9 +73,7 @@ function Home() {
       </div>
       <div className="product-listing">
         {products.map((product) => (
-          <div className="product-card">
-            <h1>{product.name}</h1>
-          </div>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>

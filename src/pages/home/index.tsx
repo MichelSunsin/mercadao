@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Drawer } from 'antd';
 import axios from 'axios';
-import { FiLogOut } from 'react-icons/fi';
-import { BsFillCartFill } from 'react-icons/bs';
 
-import { ProductCard, Cart } from 'components';
+import { ProductCard, Cart, Header } from 'components';
 import type { TCategory, TProduct } from 'types/models.type';
 
 import './styles.scss';
 
 function Home() {
-  const navigate = useNavigate();
-
   const [search, setSearch] = useState('');
 
   const [categories, setCategories] = useState<TCategory[]>([]);
@@ -49,20 +44,7 @@ function Home() {
   return (
     <>
       <div className="home-container">
-        <div className="header">
-          <div className="align-left">Mercadão de Garça</div>
-          <div className="align-right">
-            <button
-              type="button"
-              onClick={() => setIsCartOpen((prevState) => !prevState)}
-            >
-              <BsFillCartFill />
-            </button>
-            <button type="button" onClick={() => navigate('/login')}>
-              <FiLogOut />
-            </button>
-          </div>
-        </div>
+        <Header setIsCartOpen={setIsCartOpen} />
         <div className="sidenav">
           <input
             className="mrc-input"

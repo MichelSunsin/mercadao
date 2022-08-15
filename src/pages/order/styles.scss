@@ -1,0 +1,81 @@
+@import '~/src/styles/variables.scss';
+
+.order-container {
+  display: grid;
+  grid-template-areas:
+    'head head'
+    'main main';
+  grid-template-columns: 1fr;
+  grid-template-rows: 80px 1fr;
+  height: 100vh;
+  color: white;
+
+  .order-info-wrapper {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+
+    .order-info-container {
+      padding: 20px;
+      border-radius: 8px;
+      background-color: $color-primary-200;
+      color: white;
+
+      h2,
+      h3 {
+        color: white;
+
+        &.title {
+          text-align: start;
+          text-shadow: 3px 3px 5px black;
+        }
+
+        &.total {
+          text-align: end;
+        }
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: end;
+
+        button + button {
+          margin-left: 12px;
+        }
+      }
+
+      .order-summary-container {
+        border-bottom: 1px solid #c7c7c7;
+
+        .product-listing {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+
+      .order-payment-method-container {
+        border-bottom: 1px solid #c7c7c7;
+        margin-bottom: 12px;
+
+        .align-right {
+          text-align: end;
+        }
+      }
+
+      .payment-options-container {
+        margin-bottom: 12px;
+
+        .payment-option {
+          display: flex;
+          align-items: center;
+
+          input {
+            margin-right: 3px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import type { TAuthState } from 'types';
+import type { TAuthContext } from 'types';
 
-const authContext = createContext({} as TAuthState);
+const authContext = createContext({} as TAuthContext);
 
 export default authContext;

@@ -1,7 +1,8 @@
-import Button from 'components/button';
-import useCart from 'hooks/useCart';
 import { BiImage } from 'react-icons/bi';
 import { BsCartPlusFill } from 'react-icons/bs';
+
+import { useCart } from 'hooks';
+import Button from 'components/button';
 import type { TProduct } from 'types/models.type';
 
 import './styles.scss';

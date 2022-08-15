@@ -1,16 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+
+import { useCart } from 'hooks';
+import { getCartTotal } from 'utils';
 import { Button } from 'components';
-import useCart from 'hooks/useCart';
 
 import './styles.scss';
 
 function Cart() {
   const { state, clearCart } = useCart();
-
-  const getCartTotal = () =>
-    state.products.reduce(
-      (partial, product) => partial + product.price * product.qty,
-      0,
-    );
+  const navigate = useNavigate();
 
   return (
     <div className="cart">
@@ -19,17 +17,19 @@ function Cart() {
           {state.products.map((product) => (
             <div key={product.id} className="product-info">
               <span>{product.name}</span>
-              <span>Quantidade: {product.qty}</span>
+              <span>
+                {product.qty} x R$ {product.price.toFixed(2)}
+              </span>
             </div>
           ))}
           <div className="totals-container">
-            Total: R$ {getCartTotal().toFixed(2)}
+            Total: R$ {getCartTotal(state.products).toFixed(2)}
           </div>
           <div className="buttons-container">
             <Button secondary onClick={() => clearCart()}>
               Esvaziar carrinho
             </Button>
-            <Button>Finalizar compra</Button>
+            <Button onClick={() => navigate('/order')}>Finalizar compra</Button>
           </div>
         </>
       ) : (

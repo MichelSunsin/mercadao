@@ -1,0 +1,21 @@
+.cart {
+  .product-info {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 12px;
+  }
+
+  .totals-container {
+    text-align: end;
+    margin-bottom: 12px;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: end;
+
+    button + button {
+      margin-left: 12px;
+    }
+  }
+}

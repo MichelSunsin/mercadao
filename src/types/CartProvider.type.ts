@@ -6,10 +6,11 @@ export type TCartProduct = {
 
 export type TCartState = {
   products: TCartProduct[];
+  total: number;
 };
 
 export type TCartContext = {
   state: TCartState;
   addProduct: (product: TProduct) => void;
-  clearProducts: () => void;
+  clearCart: () => void;
 };

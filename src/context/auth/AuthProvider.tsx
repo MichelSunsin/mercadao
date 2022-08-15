@@ -1,13 +1,13 @@
 import { useReducer, useMemo, useCallback } from 'react';
 
-import type { TAuthProvider } from 'types';
+import type { TAuthState } from 'types';
 import { CLEAR_LOGIN_TOKEN, SET_LOGIN_TOKEN } from '../types';
 
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 
 const AuthProvider = ({ children }: any) => {
-  const initialState: TAuthProvider = {
+  const initialState: TAuthState = {
     loading: false,
     loginToken: '123',
   };

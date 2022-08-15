@@ -1,7 +1,7 @@
 import type { TCartState } from 'types';
-import { CLEAR_PRODUCTS, ADD_PRODUCT } from '../types';
+import { CLEAR_CART, ADD_PRODUCT } from '../types';
 
-export default (state: TCartState, action: { type: string; payload: any }) => {
+export default (state: TCartState, action: { type: string; payload?: any }) => {
   switch (action.type) {
     case ADD_PRODUCT: {
       const existingCartItemIndex = state.products.findIndex(
@@ -28,10 +28,11 @@ export default (state: TCartState, action: { type: string; payload: any }) => {
         products: [{ ...action.payload, qty: 1 }, ...state.products],
       };
     }
-    case CLEAR_PRODUCTS: {
+    case CLEAR_CART: {
       return {
         ...state,
         products: [],
+        total: 0,
       };
     }
     default:

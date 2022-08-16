@@ -1,6 +1,8 @@
-import Button from 'components/button';
 import { BiImage } from 'react-icons/bi';
 import { BsCartPlusFill } from 'react-icons/bs';
+
+import { useAuth, useCart } from 'hooks';
+import Button from 'components/button';
 import type { TProduct } from 'types/models.type';
 
 import './styles.scss';
@@ -10,6 +12,9 @@ type TProductCard = {
 };
 
 function ProductCard({ product }: TProductCard) {
+  const { state } = useAuth();
+  const { addProduct } = useCart();
+
   return (
     <div className="product-card">
       <BiImage className="product-image" />
@@ -17,9 +22,11 @@ function ProductCard({ product }: TProductCard) {
         <h4>{product.name}</h4>
         <h4>R$ {product.price}</h4>
       </div>
-      <Button>
-        <BsCartPlusFill className="add-to-cart" />
-      </Button>
+      {state.user?.deliveryAddress && (
+        <Button onClick={() => addProduct(product)}>
+          <BsCartPlusFill className="add-to-cart" />
+        </Button>
+      )}
     </div>
   );
 }

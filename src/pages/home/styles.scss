@@ -10,25 +10,6 @@
   height: 100vh;
   color: white;
 
-  .header {
-    grid-area: head;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $color-secondary-200;
-    padding: 20px;
-
-    .align-right {
-      button {
-        cursor: pointer;
-        border: none;
-        color: white;
-        font-size: 32px;
-        background-color: inherit;
-      }
-    }
-  }
-
   .sidenav {
     grid-area: nav;
     padding: 10px;
@@ -42,6 +23,8 @@
 
     input {
       border: 1px solid #c7c7c7;
+      margin-bottom: 15px;
+      color: black;
     }
 
     button {
@@ -49,6 +32,7 @@
       background-color: transparent;
       padding: 8px;
       border: 1px solid #ccc;
+      color: $color-secondary-200;
       cursor: pointer;
 
       &:hover {
@@ -74,5 +58,6 @@
     gap: 20px;
     padding: 10px;
     background-color: white;
+    overflow-y: scroll;
   }
 }

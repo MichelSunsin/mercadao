@@ -1,0 +1,32 @@
+@import '~/src/styles/variables.scss';
+
+.order-listing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  min-width: 40vw;
+  color: $color-secondary-200;
+  background-color: $color-secondary-200;
+  border-radius: 8px;
+  color: white;
+
+  button {
+    background-color: $color-primary-200;
+  }
+
+  & + .order-listing {
+    margin-top: 5px;
+  }
+
+  .align-right {
+    button {
+      width: 100%;
+
+      & + button {
+        margin-top: 8px;
+        background-color: #8ec127;
+      }
+    }
+  }
+}

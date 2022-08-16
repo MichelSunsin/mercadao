@@ -1,0 +1,21 @@
+.cart {
+  .product-info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .totals-container {
+    text-align: end;
+    margin: 12px 0px;
+    font-size: 18px;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: end;
+
+    button + button {
+      margin-left: 12px;
+    }
+  }
+}

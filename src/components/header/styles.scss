@@ -1,0 +1,41 @@
+@import '~/src/styles/variables.scss';
+
+.header {
+  grid-area: head;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-secondary-200;
+  padding: 20px;
+
+  .align-left {
+    font-size: 22px;
+
+    button {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border: none;
+      background-color: inherit;
+
+      svg {
+        margin-left: 15px;
+        font-size: 45px;
+      }
+    }
+  }
+
+  .align-right {
+    button {
+      cursor: pointer;
+      border: none;
+      color: white;
+      font-size: 32px;
+      background-color: inherit;
+
+      & + button {
+        margin-left: 5px;
+      }
+    }
+  }
+}

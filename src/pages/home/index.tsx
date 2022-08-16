@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Drawer } from 'antd';
 import axios from 'axios';
-import { FiLogOut } from 'react-icons/fi';
 
-import { ProductCard } from 'components';
+import { ProductCard, Cart, Header } from 'components';
 import type { TCategory, TProduct } from 'types/models.type';
 
 import './styles.scss';
 
 function Home() {
-  const navigate = useNavigate();
-
   const [search, setSearch] = useState('');
 
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   const [products, setProducts] = useState<TProduct[]>([]);
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const fetchCategories = async () => {
     const response = await axios.get('http://localhost:3000/categories');
@@ -43,40 +42,38 @@ function Home() {
   }, [search, selectedCategory]);
 
   return (
-    <div className="home-container">
-      <div className="header">
-        <div className="align-left">Mercadão de Garça</div>
-        <div className="align-right">
-          <button type="button" onClick={() => navigate('/login')}>
-            <FiLogOut />
-          </button>
+    <>
+      <div className="home-container">
+        <Header setIsCartOpen={setIsCartOpen} />
+        <div className="sidenav">
+          <input
+            className="mrc-input"
+            placeholder="Buscar produto"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <h3>Categorias</h3>
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              type="button"
+              className={`${selectedCategory === category.id ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category.id)}
+            >
+              {category.description}
+            </button>
+          ))}
+        </div>
+        <div className="product-listing">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       </div>
-      <div className="sidenav">
-        <input
-          className="mrc-input"
-          placeholder="Buscar produto"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <h3>Categorias</h3>
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            type="button"
-            className={`${selectedCategory === category.id ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(category.id)}
-          >
-            {category.description}
-          </button>
-        ))}
-      </div>
-      <div className="product-listing">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
+      <Drawer visible={isCartOpen} onClose={() => setIsCartOpen(false)}>
+        <Cart />
+      </Drawer>
+    </>
   );
 }
 

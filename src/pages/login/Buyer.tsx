@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'components';
-import { userType } from 'types/User.type';
 
 type BuyerProps = {
   handleReturnToInitialPage: () => void;

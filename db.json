@@ -1,87 +1,189 @@
 {
   "products": [
     {
-      "id": 0,
+      "id": 1,
       "name": "Produto 1",
       "price": 2.5,
-      "categories": [0]
-    },
-    {
-      "id": 1,
-      "name": "Produto 2",
-      "price": 5.2,
-      "categories": [0]
+      "categories": [
+        0
+      ],
+      "sellerId": 2
     },
     {
       "id": 2,
-      "name": "Produto 3",
-      "price": 10,
-      "categories": [0, 1]
+      "name": "Produto 2",
+      "price": 5.2,
+      "categories": [
+        0
+      ],
+      "sellerId": 3
     },
     {
       "id": 3,
-      "name": "Produto 4",
+      "name": "Produto 3",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 2
     },
     {
       "id": 4,
-      "name": "Produto 5",
+      "name": "Produto 4",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 2
     },
     {
       "id": 5,
-      "name": "Produto 6",
+      "name": "Produto 5",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 2
     },
     {
       "id": 6,
-      "name": "Produto 7",
+      "name": "Produto 6",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 3
     },
     {
       "id": 7,
-      "name": "Produto 8",
+      "name": "Produto 7",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 3
     },
     {
       "id": 8,
-      "name": "Produto 9",
+      "name": "Produto 8",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 2
     },
     {
       "id": 9,
-      "name": "Produto 10",
+      "name": "Produto 9",
       "price": 10,
-      "categories": [0, 1]
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 3
     },
     {
       "id": 10,
+      "name": "Produto 10",
+      "price": 10,
+      "categories": [
+        0,
+        1
+      ],
+      "sellerId": 3
+    },
+    {
+      "id": 11,
       "name": "Produto 11",
       "price": 10,
-      "categories": [2]
+      "categories": [
+        2
+      ],
+      "sellerId": 2
     }
   ],
   "categories": [
     {
-      "id": 0,
+      "id": 1,
       "description": "Categoria 1"
     },
     {
-      "id": 1,
+      "id": 2,
       "description": "Categoria 2"
     },
     {
-      "id": 2,
+      "id": 3,
       "description": "Categoria 3"
     }
   ],
-  "profile": {
-    "name": "typicode"
-  }
+  "users": [
+    {
+      "id": 1,
+      "login": "teste@gmail.com",
+      "deliveryAddress": "Rua das oliveiras, 10. Parte dos ipês",
+      "password": "123"
+    },
+    {
+      "id": 2,
+      "login": "vendedor1",
+      "password": "123"
+    },
+    {
+      "id": 3,
+      "login": "vendedor2",
+      "password": "123"
+    }
+  ],
+  "orders": [
+    {
+      "status": 2,
+      "products": [
+        {
+          "id": 3,
+          "name": "Produto 3",
+          "price": 10,
+          "categories": [
+            0,
+            1
+          ],
+          "sellerId": 2,
+          "qty": 1
+        },
+        {
+          "id": 2,
+          "name": "Produto 2",
+          "price": 5.2,
+          "categories": [
+            0
+          ],
+          "sellerId": 3,
+          "qty": 1
+        },
+        {
+          "id": 1,
+          "name": "Produto 1",
+          "price": 2.5,
+          "categories": [
+            0
+          ],
+          "sellerId": 2,
+          "qty": 1
+        }
+      ],
+      "paymentMethod": 0,
+      "deliveryAddress": "Rua das oliveiras, 10. Parte dos ipês",
+      "buyerId": 1,
+      "sellersIds": [
+        2,
+        3
+      ],
+      "id": 1
+    }
+  ]
 }

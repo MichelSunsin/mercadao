@@ -1,17 +1,31 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from 'hooks';
 import { Button } from 'components';
+import axios from 'api';
+import type { TLoginUser } from 'types';
 
 type BuyerProps = {
   handleReturnToInitialPage: () => void;
 };
 
 function Buyer({ handleReturnToInitialPage }: BuyerProps) {
+  const { setUser } = useAuth();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    const newUser = {
+      login: data.login,
+      password: data.password,
+      deliveryAddress: data.deliveryAddress,
+    };
+
+    const response = await axios.post('/users', newUser);
+
+    setUser(response.data);
+
     navigate('/home');
   };
 
@@ -19,6 +33,14 @@ function Buyer({ handleReturnToInitialPage }: BuyerProps) {
     <div className="form-container">
       <h2 className="align-left">Cadastro de cliente</h2>
       <form id="form-buyer" onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="login">Login</label>
+        <input
+          type="text"
+          className="mrc-input"
+          placeholder="Ex: usuario, usuario@gmail.com"
+          {...register('login')}
+        />
+
         <label htmlFor="firstName">Nome</label>
         <input
           type="text"
@@ -56,7 +78,7 @@ function Buyer({ handleReturnToInitialPage }: BuyerProps) {
           type="text"
           className="mrc-input"
           placeholder="Ex: Rua dos Ipês, 10. Bairro das Oliveiras"
-          {...register('address')}
+          {...register('deliveryAddress')}
         />
 
         <label htmlFor="">Senha</label>

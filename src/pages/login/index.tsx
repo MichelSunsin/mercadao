@@ -16,8 +16,9 @@ type TStage = 'initial' | 'login' | 'buy' | 'sell';
 function Login() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
-  const [stage, setStage] = useState<TStage>('initial');
   const { register, handleSubmit } = useForm();
+
+  const [stage, setStage] = useState<TStage>('initial');
 
   const handleReturnToInitialPage = () => setStage('initial');
 

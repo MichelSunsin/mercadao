@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'api';
 import { useAuth } from 'hooks';
 import { Button } from 'components';
+import type { AxiosError } from 'axios';
 import Buyer from './Buyer';
 import Seller from './Seller';
 
 import './styles.scss';
-import { AxiosError } from 'axios';
-import { TLoginUser } from 'types';
 
 type TStage = 'initial' | 'login' | 'buy' | 'sell';
 

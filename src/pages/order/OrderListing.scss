@@ -18,4 +18,15 @@
   & + .order-listing {
     margin-top: 5px;
   }
+
+  .align-right {
+    button {
+      width: 100%;
+
+      & + button {
+        margin-top: 8px;
+        background-color: #8ec127;
+      }
+    }
+  }
 }

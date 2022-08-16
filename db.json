@@ -6,7 +6,8 @@
       "price": 2.5,
       "categories": [
         0
-      ]
+      ],
+      "sellerId": 2
     },
     {
       "id": 2,
@@ -14,7 +15,8 @@
       "price": 5.2,
       "categories": [
         0
-      ]
+      ],
+      "sellerId": 3
     },
     {
       "id": 3,
@@ -23,7 +25,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 2
     },
     {
       "id": 4,
@@ -32,7 +35,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 2
     },
     {
       "id": 5,
@@ -41,7 +45,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 2
     },
     {
       "id": 6,
@@ -50,7 +55,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 3
     },
     {
       "id": 7,
@@ -59,7 +65,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 3
     },
     {
       "id": 8,
@@ -68,7 +75,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 2
     },
     {
       "id": 9,
@@ -77,7 +85,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 3
     },
     {
       "id": 10,
@@ -86,7 +95,8 @@
       "categories": [
         0,
         1
-      ]
+      ],
+      "sellerId": 3
     },
     {
       "id": 11,
@@ -94,7 +104,8 @@
       "price": 10,
       "categories": [
         2
-      ]
+      ],
+      "sellerId": 2
     }
   ],
   "categories": [
@@ -117,21 +128,22 @@
       "login": "teste@gmail.com",
       "deliveryAddress": "Rua das oliveiras, 10. Parte dos ipês",
       "password": "123"
+    },
+    {
+      "id": 2,
+      "login": "vendedor1",
+      "password": "123"
+    },
+    {
+      "id": 3,
+      "login": "vendedor2",
+      "password": "123"
     }
   ],
   "orders": [
     {
+      "status": 2,
       "products": [
-        {
-          "id": 4,
-          "name": "Produto 4",
-          "price": 10,
-          "categories": [
-            0,
-            1
-          ],
-          "qty": 1
-        },
         {
           "id": 3,
           "name": "Produto 3",
@@ -140,6 +152,7 @@
             0,
             1
           ],
+          "sellerId": 2,
           "qty": 1
         },
         {
@@ -149,43 +162,7 @@
           "categories": [
             0
           ],
-          "qty": 1
-        }
-      ],
-      "paymentMethod": 0,
-      "deliveryAddress": "Rua das oliveiras, 10. Parte dos ipês",
-      "buyerId": 1,
-      "id": 1
-    },
-    {
-      "products": [
-        {
-          "id": 4,
-          "name": "Produto 4",
-          "price": 10,
-          "categories": [
-            0,
-            1
-          ],
-          "qty": 1
-        },
-        {
-          "id": 3,
-          "name": "Produto 3",
-          "price": 10,
-          "categories": [
-            0,
-            1
-          ],
-          "qty": 1
-        },
-        {
-          "id": 2,
-          "name": "Produto 2",
-          "price": 5.2,
-          "categories": [
-            0
-          ],
+          "sellerId": 3,
           "qty": 1
         },
         {
@@ -195,13 +172,18 @@
           "categories": [
             0
           ],
+          "sellerId": 2,
           "qty": 1
         }
       ],
       "paymentMethod": 0,
       "deliveryAddress": "Rua das oliveiras, 10. Parte dos ipês",
       "buyerId": 1,
-      "id": 2
+      "sellersIds": [
+        2,
+        3
+      ],
+      "id": 1
     }
   ]
 }

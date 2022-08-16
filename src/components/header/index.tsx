@@ -3,6 +3,8 @@ import { FiLogOut } from 'react-icons/fi';
 import { BsFillCartFill, BsTruck } from 'react-icons/bs';
 import { RiFileList3Fill } from 'react-icons/ri';
 
+import { useAuth } from 'hooks';
+
 import './styles.scss';
 
 type HeaderProps = {
@@ -11,6 +13,7 @@ type HeaderProps = {
 
 function Header({ setIsCartOpen }: HeaderProps) {
   const navigate = useNavigate();
+  const { state } = useAuth();
 
   return (
     <div className="header">
@@ -25,12 +28,15 @@ function Header({ setIsCartOpen }: HeaderProps) {
             <button type="button" onClick={() => navigate('/order')}>
               <RiFileList3Fill />
             </button>
-            <button
-              type="button"
-              onClick={() => setIsCartOpen((prevState) => !prevState)}
-            >
-              <BsFillCartFill />
-            </button>
+
+            {state.user?.deliveryAddress && (
+              <button
+                type="button"
+                onClick={() => setIsCartOpen((prevState) => !prevState)}
+              >
+                <BsFillCartFill />
+              </button>
+            )}
           </>
         )}
         <button type="button" onClick={() => navigate('/login')}>

@@ -5,6 +5,7 @@ import axios from 'api';
 import { getCartTotal } from 'utils';
 import type { TOrder } from 'types';
 import { Button } from 'components';
+import { OrderStatus } from '.';
 
 type SummaryProps = {
   selectedOrder: TOrder | null;
@@ -27,12 +28,18 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
     : cartState.products;
 
   const handlePlaceOrder = async () => {
-    await axios.post('/orders', {
+    const newOrder: TOrder = {
+      status: OrderStatus.Aberta,
       products: cartState.products,
       paymentMethod: paymentOption,
-      deliveryAddress: authState.user?.deliveryAddress,
-      buyerId: authState.user?.id,
-    });
+      deliveryAddress: authState.user?.deliveryAddress ?? '',
+      buyerId: authState.user?.id ?? 0,
+      sellersIds: [
+        ...new Set(cartState.products.map((product) => product.sellerId)),
+      ],
+    };
+
+    await axios.post('/orders', newOrder);
 
     clearCart();
   };

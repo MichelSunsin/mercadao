@@ -8,6 +8,12 @@ import OrderListing from './OrderListing';
 
 import './styles.scss';
 
+export enum OrderStatus {
+  Aberta = 0,
+  Enviada = 1,
+  Finalizada = 2,
+}
+
 function Order() {
   const { state } = useCart();
   const [selectedOrder, setSelectedOrder] = useState<TOrder | null>(null);

@@ -22,6 +22,8 @@
       border-radius: 8px;
       background-color: $color-primary-200;
       color: white;
+      max-height: 80vh;
+      overflow: auto;
 
       h2,
       h3 {

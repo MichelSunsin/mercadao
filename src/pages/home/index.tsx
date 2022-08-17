@@ -26,7 +26,7 @@ function Home() {
     let url = `http://localhost:3000/products?name_like=${search}`;
 
     if (selectedCategory !== null) {
-      url += `&categories_like=${selectedCategory}`;
+      url += `&category=${selectedCategory}`;
     }
 
     const response = await axios.get(url);

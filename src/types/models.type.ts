@@ -9,7 +9,7 @@ export type TProduct = {
   id: number;
   name: string;
   price: number;
-  categories: TCategory[];
+  category: TCategory;
   sellerId: number;
 };
 

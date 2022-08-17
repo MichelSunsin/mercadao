@@ -16,14 +16,15 @@ type TStage = 'initial' | 'login' | 'buy' | 'sell';
 function Login() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
-  const [stage, setStage] = useState<TStage>('initial');
   const { register, handleSubmit } = useForm();
+
+  const [stage, setStage] = useState<TStage>('initial');
 
   const handleReturnToInitialPage = () => setStage('initial');
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await axios.get(`/users?login_like=${data.email}`);
+      const response = await axios.get(`/users?login_like=${data.login}`);
 
       if (response.data[0]?.password === data.password) {
         setUser(response.data[0]);
@@ -64,9 +65,9 @@ function Login() {
         <div className="form-container">
           <h2 className="align-left">Login</h2>
           <form id="form-login" onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="email">Usuário</label>
-            <input type="text" className="mrc-input" {...register('email')} />
-            <label htmlFor="passwrod">Senha</label>
+            <label htmlFor="login">Login</label>
+            <input type="text" className="mrc-input" {...register('login')} />
+            <label htmlFor="password">Senha</label>
             <input
               type="password"
               className="mrc-input"

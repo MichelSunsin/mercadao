@@ -1,18 +1,30 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+
 import { Button } from 'components';
-import { userType } from 'types/User.type';
+import { useAuth } from 'hooks';
+import axios from 'api';
+import type { TLoginUser } from 'types';
 
 type SellerProps = {
   handleReturnToInitialPage: () => void;
 };
 
 function Seller({ handleReturnToInitialPage }: SellerProps) {
+  const { setUser } = useAuth();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    const newUser = {
+      login: data.login,
+      password: data.password,
+    };
+
+    await axios.post('/users', newUser);
+
+    setUser(newUser as TLoginUser);
+
     navigate('/home');
   };
 
@@ -20,6 +32,14 @@ function Seller({ handleReturnToInitialPage }: SellerProps) {
     <div className="form-container">
       <h2 className="align-left">Cadastro de prestador de serviço</h2>
       <form id="form-seller" onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="login">Login</label>
+        <input
+          type="text"
+          className="mrc-input"
+          placeholder="Ex: usuario, usuario@gmail.com"
+          {...register('login')}
+        />
+
         <label htmlFor="firstName">Nome</label>
         <input
           type="text"

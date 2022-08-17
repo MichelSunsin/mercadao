@@ -96,7 +96,10 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
           </div>
           <div className="order-payment-method-container">
             <h2 className="title">Endereço de entrega</h2>
-            <h3 className="align-right">{authState.user?.deliveryAddress}</h3>
+            <h3 className="align-right">
+              {authState.user?.deliveryAddress ??
+                selectedOrder?.deliveryAddress}
+            </h3>
           </div>
           <div className="button-container">
             {!selectedOrder ? (

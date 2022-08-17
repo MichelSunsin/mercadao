@@ -1,5 +1,7 @@
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { BiImage } from 'react-icons/bi';
 import { BsCartPlusFill } from 'react-icons/bs';
+import { AiFillEdit } from 'react-icons/ai';
 
 import { useAuth, useCart } from 'hooks';
 import Button from 'components/button';
@@ -12,6 +14,7 @@ type TProductCard = {
 };
 
 function ProductCard({ product }: TProductCard) {
+  const navigate = useNavigate();
   const { state } = useAuth();
   const { addProduct } = useCart();
 
@@ -24,7 +27,12 @@ function ProductCard({ product }: TProductCard) {
       </div>
       {state.user?.deliveryAddress && (
         <Button onClick={() => addProduct(product)}>
-          <BsCartPlusFill className="add-to-cart" />
+          <BsCartPlusFill className="button-icon" />
+        </Button>
+      )}
+      {!state.user?.deliveryAddress && product.sellerId === state.user?.id && (
+        <Button onClick={() => navigate(`/product?${product.id}`)}>
+          <AiFillEdit className="button-icon" />
         </Button>
       )}
     </div>

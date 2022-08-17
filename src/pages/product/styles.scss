@@ -1,0 +1,56 @@
+@import '~/src/styles/variables.scss';
+
+.product-container {
+  display: grid;
+  grid-template-areas:
+    'head head'
+    'main main';
+  grid-template-columns: 1fr;
+  grid-template-rows: 80px 1fr;
+  height: 100vh;
+  color: white;
+
+  .product-info-wrapper {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+
+    .product-info-container {
+      padding: 20px;
+      border-radius: 8px;
+      background-color: $color-primary-200;
+      color: white;
+      max-height: 80vh;
+      overflow: auto;
+
+      h2.title {
+        color: white;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        input {
+          color: black;
+
+          & + label {
+            margin-top: 8px;
+          }
+        }
+      }
+
+      .buttons-container-rows {
+        display: flex;
+        justify-content: end;
+
+        > button + button {
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { BsFillCartFill, BsTruck } from 'react-icons/bs';
 import { RiFileList3Fill } from 'react-icons/ri';
+import { IoBagAdd } from 'react-icons/io5';
 
 import { useAuth } from 'hooks';
 
@@ -25,18 +26,22 @@ function Header({ setIsCartOpen }: HeaderProps) {
       <div className="align-right">
         {setIsCartOpen && (
           <>
-            <button type="button" onClick={() => navigate('/order')}>
-              <RiFileList3Fill />
-            </button>
-
-            {state.user?.deliveryAddress && (
+            {state.user?.deliveryAddress ? (
               <button
                 type="button"
                 onClick={() => setIsCartOpen((prevState) => !prevState)}
               >
                 <BsFillCartFill />
               </button>
+            ) : (
+              <button type="button" onClick={() => navigate('/product')}>
+                <IoBagAdd />
+              </button>
             )}
+
+            <button type="button" onClick={() => navigate('/order')}>
+              <RiFileList3Fill />
+            </button>
           </>
         )}
         <button type="button" onClick={() => navigate('/login')}>

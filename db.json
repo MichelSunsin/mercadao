@@ -1,13 +1,5 @@
 {
-  "products": [
-    {
-      "name": "Produto 1",
-      "price": 8.5,
-      "category": 3,
-      "sellerId": 2,
-      "id": 1
-    }
-  ],
+  "products": [],
   "categories": [
     {
       "id": 1,
@@ -22,39 +14,6 @@
       "description": "Categoria 3"
     }
   ],
-  "users": [
-    {
-      "login": "teste",
-      "password": "123",
-      "deliveryAddress": "Rua dos Ipês, 47. Parque das Flores",
-      "id": 1
-    },
-    {
-      "login": "vendedor1",
-      "password": "123",
-      "id": 2
-    }
-  ],
-  "orders": [
-    {
-      "status": 2,
-      "products": [
-        {
-          "name": "Produto 1",
-          "price": 8.5,
-          "category": 3,
-          "sellerId": 2,
-          "id": 1,
-          "qty": 2
-        }
-      ],
-      "paymentMethod": 0,
-      "deliveryAddress": "Rua dos Ipês, 47. Parque das Flores",
-      "buyerId": 1,
-      "sellersIds": [
-        2
-      ],
-      "id": 1
-    }
-  ]
+  "users": [],
+  "orders": []
 }

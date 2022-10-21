@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Drawer } from 'antd';
 import axios from 'axios';
 
@@ -6,40 +6,42 @@ import { ProductCard, Cart, Header } from 'components';
 import type { TCategory, TProduct } from 'types/models.type';
 
 import './styles.scss';
+import useFetch from 'hooks/useProducts';
 
 function Home() {
   const [search, setSearch] = useState('');
 
-  const [categories, setCategories] = useState<TCategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-
-  const [products, setProducts] = useState<TProduct[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const fetchCategories = async () => {
-    const response = await axios.get('http://localhost:3000/categories');
-    setCategories([{ id: null, description: 'Todas' }, ...response.data]);
-  };
+  const categoryQueryFilter = useMemo(
+    () => ({
+      name: 'name',
+      direction: 'asc',
+    }),
+    [selectedCategory],
+  );
 
-  const fetchProducts = async () => {
-    let url = `http://localhost:3000/products?name_like=${search}`;
+  const { data: categories } = useFetch(
+    'categories',
+    undefined,
+    categoryQueryFilter,
+  );
 
-    if (selectedCategory !== null) {
-      url += `&category=${selectedCategory}`;
-    }
+  const productQueryFilter = useMemo(
+    () =>
+      selectedCategory
+        ? {
+            name: 'category',
+            operator: '==',
+            value: selectedCategory,
+          }
+        : undefined,
+    [selectedCategory],
+  );
 
-    const response = await axios.get(url);
-    setProducts(response.data);
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [search, selectedCategory]);
+  const { data: products } = useFetch('products', productQueryFilter);
 
   return (
     <>
@@ -53,7 +55,7 @@ function Home() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <h3>Categorias</h3>
-          {categories.map((category) => (
+          {categories?.map((category: TCategory) => (
             <button
               key={category.id}
               type="button"
@@ -65,7 +67,7 @@ function Home() {
           ))}
         </div>
         <div className="product-listing">
-          {products.map((product) => (
+          {products?.map((product: TProduct) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

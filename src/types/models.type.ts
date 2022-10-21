@@ -1,12 +1,12 @@
 import { TCartProduct } from './CartProvider.type';
 
 export type TCategory = {
-  id: number;
+  id: string;
   description: string;
 };
 
 export type TProduct = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   category: TCategory;

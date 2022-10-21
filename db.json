@@ -1,5 +1,31 @@
 {
-  "products": [],
+  "products": [
+    {
+      "name": "Produto 1",
+      "price": 8,
+      "category": 1,
+      "id": 1
+    },
+    {
+      "name": "Produto 2",
+      "price": 10,
+      "category": 2,
+      "id": 2
+    },
+    {
+      "name": "Produto 3",
+      "price": 12,
+      "category": 3,
+      "id": 3
+    },
+    {
+      "name": "Produto vendedor 2",
+      "price": 2.4,
+      "category": null,
+      "sellerId": 2,
+      "id": 4
+    }
+  ],
   "categories": [
     {
       "id": 1,
@@ -14,6 +40,77 @@
       "description": "Categoria 3"
     }
   ],
-  "users": [],
-  "orders": []
+  "users": [
+    {
+      "login": "vendedor1",
+      "password": "123",
+      "id": 1
+    },
+    {
+      "login": "vendedor2",
+      "password": "123",
+      "id": 2
+    },
+    {
+      "login": "comprador1",
+      "password": "123",
+      "deliveryAddress": "Rua dos Ipês, 47. Parque das Flores",
+      "id": 3
+    }
+  ],
+  "orders": [
+    {
+      "status": 0,
+      "products": [
+        {
+          "name": "Produto 3",
+          "price": 12,
+          "category": 3,
+          "id": 3,
+          "qty": 2
+        },
+        {
+          "name": "Produto 2",
+          "price": 10,
+          "category": 2,
+          "id": 2,
+          "qty": 2
+        },
+        {
+          "name": "Produto 1",
+          "price": 8,
+          "category": 1,
+          "id": 1,
+          "qty": 1
+        }
+      ],
+      "paymentMethod": 0,
+      "deliveryAddress": "Rua dos Ipês, 47. Parque das Flores",
+      "buyerId": 3,
+      "sellersIds": [
+        null
+      ],
+      "id": 1
+    },
+    {
+      "status": 2,
+      "products": [
+        {
+          "name": "Produto vendedor 2",
+          "price": 2.4,
+          "category": null,
+          "sellerId": 2,
+          "id": 4,
+          "qty": 2
+        }
+      ],
+      "paymentMethod": 0,
+      "deliveryAddress": "Rua dos Ipês, 47. Parque das Flores",
+      "buyerId": 3,
+      "sellersIds": [
+        2
+      ],
+      "id": 2
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 import type { TProduct } from './models.type';
 
 export type TCartProduct = {
-  qty: number;
+  quantity: number;
 } & TProduct;
 
 export type TCartState = {

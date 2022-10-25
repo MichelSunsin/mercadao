@@ -1,7 +1,18 @@
 import { useEffect, useState } from 'react';
+import {
+  collection,
+  doc,
+  FirestoreError,
+  getFirestore,
+  onSnapshot,
+  query,
+  QueryConstraint,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
+import config from 'api/firebase-config';
 import { useAuth } from 'hooks';
-import axios from 'api';
 import { OrderStatus } from '.';
 import type { TOrder } from 'types';
 import { Button } from 'components';
@@ -13,17 +24,23 @@ type OrderListingProps = {
 };
 
 function OrderListing({ setSelectedOrder }: OrderListingProps) {
+  const firestore = getFirestore(config);
   const { state } = useAuth();
   const [orders, setOrders] = useState<TOrder[]>([]);
   const status = ['Aberta', 'Enviada', 'Finalizada'];
 
   const handleStatusUpdate = async (order: TOrder) => {
-    await axios.put(`/orders/${order.id}`, {
-      ...order,
-      status: order.status + 1,
-    });
-
-    fetchOrders();
+    if (order.uid) {
+      try {
+        await setDoc(doc(firestore, 'orders', order.uid), {
+          ...order,
+          status: order.status + 1,
+        });
+      } catch (error) {
+        const err = error as FirestoreError;
+        console.log(err.message);
+      }
+    }
   };
 
   const renderStatusButton = (order: TOrder) => {
@@ -39,20 +56,37 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
     }
   };
 
-  const fetchOrders = async () => {
-    let url = `/orders?buyerId=${state.user?.id}`;
-
-    // Vendor
-    if (!state.user?.deliveryAddress) {
-      url = `/orders?sellersIds_like=${state.user?.id}`;
-    }
-
-    const response = await axios.get(url);
-    setOrders(response.data);
-  };
-
   useEffect(() => {
-    fetchOrders();
+    if (state.user) {
+      let constraints: QueryConstraint = where(
+        'sellerUids',
+        'array-contains',
+        state.user?.uid,
+      );
+
+      // Vendor
+      if (state.user.deliveryAddress) {
+        constraints = where('buyerUid', '==', state.user?.uid);
+      }
+
+      const q = query(collection(firestore, 'orders'), constraints);
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let dbOrders: TOrder[] = [];
+
+        querySnapshot.forEach((doc) => {
+          dbOrders.push({
+            ...(doc.data() as TOrder),
+            uid: doc.id,
+          });
+        });
+
+        setOrders(dbOrders);
+      });
+
+      return function cleanUp() {
+        unsubscribe();
+      };
+    }
   }, []);
 
   return (
@@ -60,9 +94,9 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
       <h2>Pedidos</h2>
       {orders.length ? (
         orders.map((order) => (
-          <div className="order-listing" key={order.id}>
+          <div className="order-listing" key={order.uid}>
             <div className="align-left">
-              <h2>Pedido nº{order.id}</h2>
+              <h2>Id do pedido: {order.uid}</h2>
               Status: {status[order.status]}
             </div>
             <div className="align-right">

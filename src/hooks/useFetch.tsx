@@ -5,18 +5,15 @@ import {
   getDocs,
   getFirestore,
   query,
-  orderBy,
-  where,
+  QueryConstraint,
 } from 'firebase/firestore';
 import config from 'api/firebase-config';
-import type { TQueryFilter, TQueryOrder } from 'types';
 
-type TCollections = 'categories' | 'products';
+type TCollections = 'categories' | 'products' | 'orders';
 
 export default function useFetch(
   collectionName: TCollections,
-  queryFilter?: TQueryFilter,
-  queryOrder?: TQueryOrder,
+  constraints?: QueryConstraint[],
 ) {
   const [data, setData] = useState<DocumentData | null>(null);
   const [error, setError] = useState(null);
@@ -28,27 +25,10 @@ export default function useFetch(
       const db = getFirestore(config);
       const dataCollection = collection(db, collectionName);
 
-      let queriedCollection = query(dataCollection);
+      let queriedCollection = null;
 
-      if (queryFilter) {
-        queriedCollection = query(
-          dataCollection,
-          where(queryFilter.name, '==', queryFilter.value),
-        );
-      }
-
-      if (queryOrder) {
-        queriedCollection = query(
-          dataCollection,
-          orderBy(queryOrder.name, queryOrder.direction),
-        );
-      }
-
-      if (queryFilter && queryOrder) {
-        queriedCollection = query(
-          dataCollection,
-          orderBy(queryOrder.name, queryOrder.direction),
-        );
+      if (constraints?.length) {
+        queriedCollection = query(dataCollection, ...constraints);
       }
 
       const collectionSnapshot = await getDocs(
@@ -57,7 +37,7 @@ export default function useFetch(
 
       const collectionList = collectionSnapshot.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id,
+        uid: doc.id,
       }));
 
       setData(collectionList);
@@ -70,7 +50,7 @@ export default function useFetch(
 
   useEffect(() => {
     fetch();
-  }, [collectionName, queryFilter]);
+  }, [collectionName, constraints]);
 
   return { data, error, loading };
 }

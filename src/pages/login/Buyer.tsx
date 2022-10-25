@@ -1,10 +1,18 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import {
+  AuthError,
+  createUserWithEmailAndPassword,
+  getAuth,
+} from 'firebase/auth';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
 import { useAuth } from 'hooks';
 import { Button } from 'components';
-import axios from 'api';
-import type { TLoginUser } from 'types';
+import config from 'api/firebase-config';
+
+import type { TFormFields } from '.';
+import type { TUser } from 'types';
 
 type BuyerProps = {
   handleReturnToInitialPage: () => void;
@@ -12,33 +20,61 @@ type BuyerProps = {
 
 function Buyer({ handleReturnToInitialPage }: BuyerProps) {
   const { setUser } = useAuth();
-  const { register, handleSubmit } = useForm();
+  const auth = getAuth();
+  const firestore = getFirestore(config);
+
+  const { register, handleSubmit } = useForm<TFormFields>();
   const navigate = useNavigate();
 
-  const onSubmit = async (data: any) => {
-    const newUser = {
-      login: data.login,
-      password: data.password,
-      deliveryAddress: data.deliveryAddress,
-    };
+  const onSubmit = async (data: TFormFields) => {
+    try {
+      const {
+        email,
+        password,
+        firstName,
+        lastName,
+        document,
+        birthdate,
+        deliveryAddress,
+      } = data;
 
-    const response = await axios.post('/users', newUser);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
 
-    setUser(response.data);
+      const newUser: TUser = {
+        uid: user.uid,
+        email,
+        firstName,
+        lastName,
+        document,
+        birthdate,
+        deliveryAddress,
+      };
 
-    navigate('/home');
+      await setDoc(doc(firestore, 'users', user.uid), newUser);
+
+      setUser(newUser);
+
+      navigate('/home');
+    } catch (error) {
+      const err = error as AuthError;
+      console.log(err.message);
+    }
   };
 
   return (
     <div className="form-container">
       <h2 className="align-left">Cadastro de cliente</h2>
       <form id="form-buyer" onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="login">Login</label>
+        <label htmlFor="email">Login</label>
         <input
           type="text"
           className="mrc-input"
           placeholder="Ex: usuario, usuario@gmail.com"
-          {...register('login')}
+          {...register('email')}
         />
 
         <label htmlFor="firstName">Nome</label>
@@ -57,17 +93,17 @@ function Buyer({ handleReturnToInitialPage }: BuyerProps) {
           {...register('lastName')}
         />
 
-        <label htmlFor="CPF">CPF</label>
+        <label htmlFor="document">CPF</label>
         <input
           type="text"
           className="mrc-input"
           placeholder="Ex: 22233344455"
-          {...register('CPF')}
+          {...register('document')}
         />
 
         <label htmlFor="birthdate">Data de nascimento</label>
         <input
-          type="text"
+          type="date"
           className="mrc-input"
           placeholder="Ex: 06/12/2022"
           {...register('birthdate')}

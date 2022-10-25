@@ -15,10 +15,10 @@ function Cart() {
       {state.products.length ? (
         <>
           {state.products.map((product) => (
-            <div key={product.id} className="product-info">
+            <div key={product.uid} className="product-info">
               <span>{product.name}</span>
               <span>
-                {product.qty} x R$ {product.price.toFixed(2)}
+                {product.quantity} x R$ {product.price.toFixed(2)}
               </span>
             </div>
           ))}

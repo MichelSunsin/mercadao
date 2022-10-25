@@ -1,11 +1,18 @@
 import { useState } from 'react';
+import {
+  addDoc,
+  collection,
+  doc,
+  FirestoreError,
+  getFirestore,
+} from 'firebase/firestore';
 
+import config from 'api/firebase-config';
 import { useAuth, useCart } from 'hooks';
-import axios from 'api';
 import { getCartTotal } from 'utils';
-import type { TOrder } from 'types';
 import { Button } from 'components';
 import { OrderStatus } from '.';
+import type { TOrder } from 'types';
 
 type SummaryProps = {
   selectedOrder: TOrder | null;
@@ -13,6 +20,7 @@ type SummaryProps = {
 };
 
 function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
+  const firestore = getFirestore(config);
   const { state: authState } = useAuth();
   const { state: cartState, clearCart } = useCart();
 
@@ -28,20 +36,27 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
     : cartState.products;
 
   const handlePlaceOrder = async () => {
-    const newOrder: TOrder = {
-      status: OrderStatus.Aberta,
-      products: cartState.products,
-      paymentMethod: paymentOption,
-      deliveryAddress: authState.user?.deliveryAddress ?? '',
-      buyerId: authState.user?.id ?? 0,
-      sellersIds: [
-        ...new Set(cartState.products.map((product) => product.sellerId)),
-      ],
-    };
+    if (authState.user) {
+      try {
+        const newOrder: TOrder = {
+          status: OrderStatus.Aberta,
+          products: cartState.products,
+          paymentMethod: paymentOption,
+          deliveryAddress: authState.user?.deliveryAddress ?? '',
+          buyerUid: authState.user.uid,
+          sellerUids: [
+            ...new Set(cartState.products.map((product) => product.sellerUid)),
+          ],
+        };
 
-    await axios.post('/orders', newOrder);
+        await addDoc(collection(firestore, 'orders'), newOrder);
 
-    clearCart();
+        clearCart();
+      } catch (error) {
+        const err = error as FirestoreError;
+        console.log(err.message);
+      }
+    }
   };
 
   return (
@@ -79,10 +94,10 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
           <h2 className="title">Revise seu pedido</h2>
           <div className="order-summary-container">
             {products.map((product) => (
-              <div className="product-listing" key={product.id}>
+              <div className="product-listing" key={product.uid}>
                 <div className="align-left">{product.name}</div>
                 <div className="align-right">{`${
-                  product.qty
+                  product.quantity
                 } * R$ ${product.price.toFixed(2)}`}</div>
               </div>
             ))}
@@ -97,8 +112,9 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
           <div className="order-payment-method-container">
             <h2 className="title">Endereço de entrega</h2>
             <h3 className="align-right">
-              {authState.user?.deliveryAddress ??
-                selectedOrder?.deliveryAddress}
+              {selectedOrder?.uid
+                ? selectedOrder.deliveryAddress
+                : authState.user?.deliveryAddress}
             </h3>
           </div>
           <div className="button-container">

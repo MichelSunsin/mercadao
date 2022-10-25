@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Drawer } from 'antd';
-import axios from 'axios';
+import { orderBy, where } from 'firebase/firestore';
 
+import useFetch from 'hooks/useFetch';
 import { ProductCard, Cart, Header } from 'components';
 import type { TCategory, TProduct } from 'types/models.type';
 
 import './styles.scss';
-import useFetch from 'hooks/useProducts';
 
 function Home() {
   const [search, setSearch] = useState('');
@@ -16,28 +16,14 @@ function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const categoryQueryFilter = useMemo(
-    () => ({
-      name: 'name',
-      direction: 'asc',
-    }),
+    () => [orderBy('description', 'asc')],
     [selectedCategory],
   );
 
-  const { data: categories } = useFetch(
-    'categories',
-    undefined,
-    categoryQueryFilter,
-  );
+  const { data: categories } = useFetch('categories', categoryQueryFilter);
 
   const productQueryFilter = useMemo(
-    () =>
-      selectedCategory
-        ? {
-            name: 'category',
-            operator: '==',
-            value: selectedCategory,
-          }
-        : undefined,
+    () => (selectedCategory ? [where('category', '==', selectedCategory)] : []),
     [selectedCategory],
   );
 
@@ -55,12 +41,20 @@ function Home() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <h3>Categorias</h3>
+          <button
+            key="todas-as-categorias"
+            type="button"
+            className={`${!selectedCategory ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(null)}
+          >
+            Todas
+          </button>
           {categories?.map((category: TCategory) => (
             <button
-              key={category.id}
+              key={category.uid}
               type="button"
-              className={`${selectedCategory === category.id ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
+              className={`${selectedCategory === category.uid ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category.uid)}
             >
               {category.description}
             </button>
@@ -68,7 +62,7 @@ function Home() {
         </div>
         <div className="product-listing">
           {products?.map((product: TProduct) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.uid} product={product} />
           ))}
         </div>
       </div>

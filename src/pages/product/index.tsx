@@ -1,60 +1,84 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import axios from 'api';
-import { useAuth } from 'hooks';
+import { useAuth, useFetch } from 'hooks';
 import { Button, Header } from 'components';
 import type { TCategory, TProduct } from 'types';
 
 import './styles.scss';
+import {
+  addDoc,
+  collection,
+  doc,
+  FirestoreError,
+  getDoc,
+  getFirestore,
+  orderBy,
+  setDoc,
+} from 'firebase/firestore';
+import config from 'api/firebase-config';
+import { getAuth } from 'firebase/auth';
 
 function Product() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const { state } = useAuth();
 
+  const firestore = getFirestore(config);
+
+  const { register, reset, handleSubmit } = useForm<TProduct>();
   const [product, setProduct] = useState<TProduct | null>(null);
-  const [categories, setCategories] = useState<TCategory[]>([]);
 
-  const { register, reset, handleSubmit } = useForm();
+  const productUid = search.replace('?', '');
 
-  const productId = search.replace(/\D/g, '');
+  const onSubmit = async (data: TProduct) => {
+    if (state.user) {
+      try {
+        data.sellerUid = state.user.uid;
 
-  const onSubmit = async (data: any) => {
-    data.sellerId = state.user?.id;
-    if (productId) {
-      await axios.put(`/products/${productId}`, data);
-    } else {
-      await axios.post('products', data);
+        if (product) {
+          await setDoc(doc(firestore, 'products', productUid), { ...data });
+        } else {
+          await addDoc(collection(firestore, 'products'), {
+            ...data,
+          });
+        }
+
+        navigate('/home');
+      } catch (error) {
+        const err = error as FirestoreError;
+        console.log(err.message);
+      }
     }
-
-    navigate('/home');
   };
+
+  const categoryQueryFilter = useMemo(
+    () => [orderBy('description', 'asc')],
+    [],
+  );
+
+  const { data: categories } = useFetch('categories', categoryQueryFilter);
 
   const fetchProduct = async () => {
-    const response = await axios.get(`/products?id=${productId}`);
-    setProduct(response.data[0]);
-  };
+    const product = await getDoc(doc(firestore, 'products', productUid));
 
-  const fetchCategories = async () => {
-    const response = await axios.get('http://localhost:3000/categories');
-    setCategories(response.data);
+    if (product.exists()) {
+      setProduct(product.data() as TProduct);
+    }
   };
 
   useEffect(() => {
-    if (productId) {
+    if (!product) {
       fetchProduct();
     }
-  }, [productId]);
+  }, [productUid]);
 
   useEffect(() => {
-    reset(product as any);
+    if (product) {
+      reset(product);
+    }
   }, [product]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   return (
     <div className="product-container">
@@ -72,12 +96,9 @@ function Product() {
               {...register('price', { valueAsNumber: true })}
             />
             <label htmlFor="category">Categoria</label>
-            <select
-              className="mrc-input"
-              {...register('category', { valueAsNumber: true })}
-            >
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+            <select className="mrc-input" {...register('category')}>
+              {categories?.map((category: TCategory) => (
+                <option key={category.uid} value={category.uid}>
                   {category.description}
                 </option>
               ))}
@@ -88,7 +109,7 @@ function Product() {
               Voltar
             </Button>
             <Button type="submit" form="form-product">
-              {productId ? 'Atualizar' : 'Cadastrar'}
+              {productUid ? 'Atualizar' : 'Cadastrar'}
             </Button>
           </div>
         </div>

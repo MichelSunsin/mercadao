@@ -10,13 +10,14 @@ type ButtonProps = {
 >;
 
 function Button(props: ButtonProps) {
-  const { children, className } = props;
-  const buttonType = props.secondary ? 'secondary' : 'primary';
+  const { children, className, secondary, ...buttonProps } = props;
+
+  const buttonType = secondary ? 'secondary' : 'primary';
 
   return (
     <button
+      {...buttonProps}
       className={`mrc-button ${buttonType} ${className ? className : ''}`}
-      {...props}
     >
       {children}
     </button>

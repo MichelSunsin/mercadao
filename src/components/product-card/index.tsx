@@ -1,4 +1,4 @@
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BiImage } from 'react-icons/bi';
 import { BsCartPlusFill } from 'react-icons/bs';
 import { AiFillEdit } from 'react-icons/ai';
@@ -30,8 +30,8 @@ function ProductCard({ product }: TProductCard) {
           <BsCartPlusFill className="button-icon" />
         </Button>
       )}
-      {!state.user?.deliveryAddress && product.sellerId === state.user?.id && (
-        <Button onClick={() => navigate(`/product?${product.id}`)}>
+      {!state.user?.deliveryAddress && product.sellerUid === state.user?.uid && (
+        <Button onClick={() => navigate(`/product?${product.uid}`)}>
           <AiFillEdit className="button-icon" />
         </Button>
       )}

@@ -1,40 +1,39 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword, AuthError } from 'firebase/auth';
 
-import axios from 'api';
-import { useAuth } from 'hooks';
 import { Button } from 'components';
-import type { AxiosError } from 'axios';
 import Buyer from './Buyer';
 import Seller from './Seller';
 
 import './styles.scss';
+import { TUser } from 'types';
 
+export type TFormFields = TUser & {
+  password: string;
+  passwordConfirm: string;
+};
 type TStage = 'initial' | 'login' | 'buy' | 'sell';
 
 function Login() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+
+  const auth = getAuth();
+
   const { register, handleSubmit } = useForm();
 
   const [stage, setStage] = useState<TStage>('initial');
-
   const handleReturnToInitialPage = () => setStage('initial');
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await axios.get(`/users?login_like=${data.login}`);
+      await signInWithEmailAndPassword(auth, data.login, data.password);
 
-      if (response.data[0]?.password === data.password) {
-        setUser(response.data[0]);
-        navigate('/home');
-      }
+      navigate('/home');
     } catch (error) {
-      const err = error as AxiosError;
-      if (err.response?.status === 404) {
-        console.log('Usuário não encontrado');
-      }
+      const err = error as AuthError;
+      console.log(err.message);
     }
   };
 

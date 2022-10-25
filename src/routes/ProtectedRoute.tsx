@@ -1,17 +1,26 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
-import useAuth from 'hooks/useAuth';
+import { useAuth } from 'hooks';
+import config from 'api/firebase-config';
+import type { TUser } from 'types';
 
 const ProtectedRoute = ({ children }: any) => {
-  const { state } = useAuth();
   const location = useLocation();
+  const auth = getAuth();
+  const firestore = getFirestore(config);
+  const { setUser } = useAuth();
 
-  if (!state.user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      const response = await getDoc(doc(firestore, 'users', user.uid));
+      setUser(response.data() as TUser);
+    }
+  });
+
+  if (!auth.currentUser) {
+    return <Navigate to={'/login'} state={{ from: location }} replace />;
   }
 
   return children;

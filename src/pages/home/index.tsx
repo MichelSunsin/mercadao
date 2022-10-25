@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Drawer } from 'antd';
-import axios from 'axios';
+import { orderBy, where } from 'firebase/firestore';
 
+import useFetch from 'hooks/useFetch';
 import { ProductCard, Cart, Header } from 'components';
 import type { TCategory, TProduct } from 'types/models.type';
 
@@ -10,36 +11,23 @@ import './styles.scss';
 function Home() {
   const [search, setSearch] = useState('');
 
-  const [categories, setCategories] = useState<TCategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-
-  const [products, setProducts] = useState<TProduct[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const fetchCategories = async () => {
-    const response = await axios.get('http://localhost:3000/categories');
-    setCategories([{ id: null, description: 'Todas' }, ...response.data]);
-  };
+  const categoryQueryFilter = useMemo(
+    () => [orderBy('description', 'asc')],
+    [selectedCategory],
+  );
 
-  const fetchProducts = async () => {
-    let url = `http://localhost:3000/products?name_like=${search}`;
+  const { data: categories } = useFetch('categories', categoryQueryFilter);
 
-    if (selectedCategory !== null) {
-      url += `&category=${selectedCategory}`;
-    }
+  const productQueryFilter = useMemo(
+    () => (selectedCategory ? [where('category', '==', selectedCategory)] : []),
+    [selectedCategory],
+  );
 
-    const response = await axios.get(url);
-    setProducts(response.data);
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [search, selectedCategory]);
+  const { data: products } = useFetch('products', productQueryFilter);
 
   return (
     <>
@@ -53,20 +41,28 @@ function Home() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <h3>Categorias</h3>
-          {categories.map((category) => (
+          <button
+            key="todas-as-categorias"
+            type="button"
+            className={`${!selectedCategory ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(null)}
+          >
+            Todas
+          </button>
+          {categories?.map((category: TCategory) => (
             <button
-              key={category.id}
+              key={category.uid}
               type="button"
-              className={`${selectedCategory === category.id ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
+              className={`${selectedCategory === category.uid ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category.uid)}
             >
               {category.description}
             </button>
           ))}
         </div>
         <div className="product-listing">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products?.map((product: TProduct) => (
+            <ProductCard key={product.uid} product={product} />
           ))}
         </div>
       </div>

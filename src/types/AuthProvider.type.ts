@@ -1,15 +1,11 @@
-import { TLoginUser } from './models.type';
+import { TUser } from './models.type';
 
 export type TAuthState = {
-  loading: boolean;
-  loginToken: string | null;
-  user: TLoginUser | null;
+  user: TUser | null;
 };
 
 export type TAuthContext = {
   state: TAuthState;
-  setLoginToken: (loginToken: string) => void;
-  clearLoginToken: () => void;
-  setUser: (user: TLoginUser) => void;
+  setUser: (user: TUser) => void;
   clearUser: () => void;
 };

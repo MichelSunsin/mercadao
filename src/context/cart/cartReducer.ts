@@ -5,7 +5,7 @@ export default (state: TCartState, action: { type: string; payload?: any }) => {
   switch (action.type) {
     case ADD_PRODUCT: {
       const existingCartItemIndex = state.products.findIndex(
-        (item) => item.id === action.payload.id,
+        (item) => item.uid === action.payload.uid,
       );
 
       if (existingCartItemIndex > -1) {
@@ -15,7 +15,7 @@ export default (state: TCartState, action: { type: string; payload?: any }) => {
             ...state.products.slice(0, existingCartItemIndex),
             {
               ...state.products[existingCartItemIndex],
-              qty: state.products[existingCartItemIndex].qty + 1,
+              quantity: state.products[existingCartItemIndex].quantity + 1,
             },
             ...state.products.slice(existingCartItemIndex + 1),
           ],
@@ -25,7 +25,7 @@ export default (state: TCartState, action: { type: string; payload?: any }) => {
       }
       return {
         ...state,
-        products: [{ ...action.payload, qty: 1 }, ...state.products],
+        products: [{ ...action.payload, quantity: 1 }, ...state.products],
       };
     }
     case CLEAR_CART: {

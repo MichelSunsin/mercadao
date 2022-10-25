@@ -1,40 +1,34 @@
 import { TCartProduct } from './CartProvider.type';
 
 export type TCategory = {
-  id: number;
+  uid: string;
   description: string;
 };
 
 export type TProduct = {
-  id: number;
+  uid: string;
   name: string;
   price: number;
   category: TCategory;
-  sellerId: number;
+  sellerUid: string;
 };
 
 export type TUser = {
+  uid: string;
+  email: string;
   firstName: string;
   lastName: string;
   document: string;
   birthdate: string;
-  deliveryAddress?: string;
-  password: string;
-};
-
-export type TLoginUser = {
-  id: number;
-  login: string;
-  password: string;
-  deliveryAddress?: string;
+  deliveryAddress: string;
 };
 
 export type TOrder = {
-  id?: number;
+  uid?: string;
   status: number;
   products: TCartProduct[];
   paymentMethod: number;
   deliveryAddress: string;
-  buyerId: number;
-  sellersIds: number[];
+  buyerUid: string;
+  sellerUids: string[];
 };

@@ -1,3 +1,4 @@
+import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { BsFillCartFill, BsTruck } from 'react-icons/bs';
@@ -15,6 +16,7 @@ type HeaderProps = {
 function Header({ setIsCartOpen }: HeaderProps) {
   const navigate = useNavigate();
   const { state } = useAuth();
+  const auth = getAuth();
 
   return (
     <div className="header">
@@ -44,7 +46,7 @@ function Header({ setIsCartOpen }: HeaderProps) {
             </button>
           </>
         )}
-        <button type="button" onClick={() => navigate('/login')}>
+        <button type="button" onClick={async () => await signOut(auth)}>
           <FiLogOut />
         </button>
       </div>

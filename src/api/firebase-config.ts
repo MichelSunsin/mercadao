@@ -1,5 +1,4 @@
 import { initializeApp } from 'firebase/app';
-import { browserLocalPersistence, setPersistence } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,

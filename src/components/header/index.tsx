@@ -1,4 +1,5 @@
-import { getAuth, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
+import { auth } from 'utils/firebase-utils';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { BsFillCartFill, BsTruck } from 'react-icons/bs';
@@ -16,7 +17,6 @@ type HeaderProps = {
 function Header({ setIsCartOpen }: HeaderProps) {
   const navigate = useNavigate();
   const { state } = useAuth();
-  const auth = getAuth();
 
   return (
     <div className="header">

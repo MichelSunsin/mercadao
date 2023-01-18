@@ -1,15 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import {
-  AuthError,
-  createUserWithEmailAndPassword,
-  getAuth,
-} from 'firebase/auth';
-import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { AuthError, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 import { useAuth } from 'hooks';
+import { auth, firestore } from 'utils/firebase-utils';
 import { Button } from 'components';
-import config from 'api/firebase-config';
 
 import type { TFormFields } from '.';
 import type { TUser } from 'types';
@@ -20,8 +16,6 @@ type BuyerProps = {
 
 function Buyer({ handleReturnToInitialPage }: BuyerProps) {
   const { setUser } = useAuth();
-  const auth = getAuth();
-  const firestore = getFirestore(config);
 
   const { register, handleSubmit } = useForm<TFormFields>();
   const navigate = useNavigate();

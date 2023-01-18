@@ -1,14 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 
 import { useAuth } from 'hooks';
+import { auth } from 'utils/firebase-utils';
 import config from 'api/firebase-config';
 import type { TUser } from 'types';
 
 const ProtectedRoute = ({ children }: any) => {
   const location = useLocation();
-  const auth = getAuth();
   const firestore = getFirestore(config);
   const { setUser } = useAuth();
 

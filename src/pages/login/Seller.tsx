@@ -1,13 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import {
-  AuthError,
-  createUserWithEmailAndPassword,
-  getAuth,
-} from 'firebase/auth';
+import { AuthError, createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
 import config from 'api/firebase-config';
+import { auth } from 'utils/firebase-utils';
 import { Button } from 'components';
 import { useAuth } from 'hooks';
 
@@ -19,7 +16,6 @@ type SellerProps = {
 };
 
 function Seller({ handleReturnToInitialPage }: SellerProps) {
-  const auth = getAuth();
   const firestore = getFirestore(config);
   const { setUser } = useAuth();
   const { register, handleSubmit } = useForm<TFormFields>();

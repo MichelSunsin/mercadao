@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   collection,
+  connectFirestoreEmulator,
   DocumentData,
   getDocs,
-  getFirestore,
   query,
   QueryConstraint,
 } from 'firebase/firestore';
-import config from 'api/firebase-config';
+
+import { firestore } from 'utils/firebase-utils';
 
 type TCollections = 'categories' | 'products' | 'orders';
 
@@ -19,11 +20,11 @@ export default function useFetch(
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  async function fetch() {
+  const fetch = useCallback(async () => {
     try {
       setLoading(true);
-      const db = getFirestore(config);
-      const dataCollection = collection(db, collectionName);
+
+      const dataCollection = collection(firestore, collectionName);
 
       let queriedCollection = null;
 
@@ -46,7 +47,7 @@ export default function useFetch(
     } finally {
       setLoading(false);
     }
-  }
+  }, [collectionName, constraints]);
 
   useEffect(() => {
     fetch();

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword, AuthError } from 'firebase/auth';
+import { signInWithEmailAndPassword, AuthError } from 'firebase/auth';
 
+import { auth } from 'utils/firebase-utils';
 import { Button } from 'components';
 import Buyer from './Buyer';
 import Seller from './Seller';
@@ -18,8 +19,6 @@ type TStage = 'initial' | 'login' | 'buy' | 'sell';
 
 function Login() {
   const navigate = useNavigate();
-
-  const auth = getAuth();
 
   const { register, handleSubmit } = useForm();
 

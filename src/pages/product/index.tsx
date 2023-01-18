@@ -18,7 +18,6 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import config from 'api/firebase-config';
-import { getAuth } from 'firebase/auth';
 
 function Product() {
   const navigate = useNavigate();

@@ -20,7 +20,14 @@ function ProductCard({ product }: TProductCard) {
 
   return (
     <div className="product-card">
-      <BiImage className="product-image" />
+      {product.productImageURL ? (
+        <div
+          className="product-image"
+          style={{ backgroundImage: `url(${product.productImageURL})` }}
+        />
+      ) : (
+        <BiImage className="product-image" />
+      )}
       <div className="product-info">
         <h4>{product.name}</h4>
         <h4>R$ {product.price}</h4>

@@ -56,38 +56,38 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
     }
   };
 
-  useEffect(() => {
-    if (state.user) {
-      let constraints: QueryConstraint = where(
-        'sellerUids',
-        'array-contains',
-        state.user?.uid,
-      );
+  // useEffect(() => {
+  //   if (state.user) {
+  //     let constraints: QueryConstraint = where(
+  //       'sellerUids',
+  //       'array-contains',
+  //       state.user?.uid,
+  //     );
 
-      // Vendor
-      if (state.user.deliveryAddress) {
-        constraints = where('buyerUid', '==', state.user?.uid);
-      }
+  //     // Vendor
+  //     if (state.user.deliveryAddress) {
+  //       constraints = where('buyerUid', '==', state.user?.uid);
+  //     }
 
-      const q = query(collection(firestore, 'orders'), constraints);
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let dbOrders: TOrder[] = [];
+  //     const q = query(collection(firestore, 'orders'), constraints);
+  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       let dbOrders: TOrder[] = [];
 
-        querySnapshot.forEach((doc) => {
-          dbOrders.push({
-            ...(doc.data() as TOrder),
-            uid: doc.id,
-          });
-        });
+  //       querySnapshot.forEach((doc) => {
+  //         dbOrders.push({
+  //           ...(doc.data() as TOrder),
+  //           uid: doc.id,
+  //         });
+  //       });
 
-        setOrders(dbOrders);
-      });
+  //       setOrders(dbOrders);
+  //     });
 
-      return function cleanUp() {
-        unsubscribe();
-      };
-    }
-  }, []);
+  //     return function cleanUp() {
+  //       unsubscribe();
+  //     };
+  //   }
+  // }, []);
 
   return (
     <div className="order-info-container">

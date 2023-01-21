@@ -26,26 +26,21 @@ function Header({ setIsCartOpen }: HeaderProps) {
         </button>
       </div>
       <div className="align-right">
-        {setIsCartOpen && (
-          <>
-            {state.user?.deliveryAddress ? (
-              <button
-                type="button"
-                onClick={() => setIsCartOpen((prevState) => !prevState)}
-              >
-                <BsFillCartFill />
-              </button>
-            ) : (
-              <button type="button" onClick={() => navigate('/product')}>
-                <IoBagAdd />
-              </button>
-            )}
-
-            <button type="button" onClick={() => navigate('/order')}>
-              <RiFileList3Fill />
-            </button>
-          </>
+        {state.user?.deliveryAddress ? (
+          <button
+            type="button"
+            onClick={() => setIsCartOpen?.((prevState) => !prevState)}
+          >
+            <BsFillCartFill />
+          </button>
+        ) : (
+          <button type="button" onClick={() => navigate('/product')}>
+            <IoBagAdd />
+          </button>
         )}
+        <button type="button" onClick={() => navigate('/order')}>
+          <RiFileList3Fill />
+        </button>
         <button type="button" onClick={async () => await signOut(auth)}>
           <FiLogOut />
         </button>

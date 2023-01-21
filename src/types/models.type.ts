@@ -11,6 +11,7 @@ export type TProduct = {
   price: number;
   category: TCategory;
   sellerUid: string;
+  productImageURL: string;
 };
 
 export type TUser = {

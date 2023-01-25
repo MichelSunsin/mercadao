@@ -6,10 +6,10 @@ export type TCategory = {
 };
 
 export type TProduct = {
-  uid: string;
+  uid?: string;
   name: string;
   price: number;
-  category: TCategory;
+  category: TCategory | null;
   sellerUid: string;
   productImageURL: string;
 };

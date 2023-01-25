@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from 'utils/firebase-utils';
-import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { BsFillCartFill, BsTruck } from 'react-icons/bs';
 import { RiFileList3Fill } from 'react-icons/ri';
@@ -34,7 +34,10 @@ function Header({ setIsCartOpen }: HeaderProps) {
             <BsFillCartFill />
           </button>
         ) : (
-          <button type="button" onClick={() => navigate('/product')}>
+          <button
+            type="button"
+            onClick={() => navigate('/product', { replace: true })}
+          >
             <IoBagAdd />
           </button>
         )}

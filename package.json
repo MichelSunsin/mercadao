@@ -8,7 +8,7 @@
     "server": "json-server --watch db.json",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "emulator": "firebase emulators:start"
+    "emulator": "firebase emulators:start --import firebase-data"
   },
   "dependencies": {
     "antd": "^4.22.4",

@@ -28,54 +28,59 @@ function Product() {
 
   const { state } = useAuth();
 
-  const { register, reset, handleSubmit } = useForm<TProduct>();
-
-  const [product, setProduct] = useState<TProduct | null>(null);
-  const [productImageUpload, setProductImageUpload] = useState<File>();
-  const [productImage, setProductImage] = useState<Blob | null>(null);
-
-  const onSubmit = async (data: TProduct) => {
-    if (state.user) {
-      try {
-        data.sellerUid = state.user.uid;
-
-        if (product) {
-          const imageURL = await uploadImageToCloud(queryProductUid);
-
-          await setDoc(doc(firestore, 'products', queryProductUid), {
-            ...data,
-            ...(imageURL && { productImageURL: imageURL }),
-          });
-        } else {
-          const docRef = await addDoc(collection(firestore, 'products'), {
-            ...data,
-          });
-
-          const imageURL = await uploadImageToCloud(docRef.id);
-
-          if (imageURL) {
-            await setDoc(
-              docRef,
-              { productImageURL: imageURL },
-              { merge: true },
-            );
-          }
-        }
-
-        navigate('/home');
-      } catch (error) {
-        const err = error as FirestoreError;
-        console.log(err.message);
-      }
-    }
-  };
-
   const categoryQueryFilter = useMemo(
     () => [orderBy('description', 'asc')],
     [],
   );
 
   const { data: categories } = useFetch('categories', categoryQueryFilter);
+
+  const productDefaultValues: TProduct = useMemo(
+    () => ({
+      name: '',
+      price: 0,
+      category: categories?.[0]?.uid ?? null,
+      productImageURL: '',
+      sellerUid: state.user?.uid ?? '',
+    }),
+    [categories, state.user],
+  );
+
+  const { register, reset, handleSubmit } = useForm<TProduct>({
+    defaultValues: productDefaultValues,
+  });
+
+  const [product, setProduct] = useState<TProduct | null>(null);
+  const [productImageUpload, setProductImageUpload] = useState<File>();
+  const [productImage, setProductImage] = useState<Blob | null>(null);
+
+  const onSubmit = async (data: TProduct) => {
+    try {
+      if (product) {
+        const imageURL = await uploadImageToCloud(queryProductUid);
+
+        await setDoc(doc(firestore, 'products', queryProductUid), {
+          ...data,
+          ...(imageURL && { productImageURL: imageURL }),
+        });
+      } else {
+        const docRef = await addDoc(collection(firestore, 'products'), {
+          ...data,
+        });
+
+        const imageURL = await uploadImageToCloud(docRef.id);
+
+        if (imageURL) {
+          await setDoc(docRef, { productImageURL: imageURL }, { merge: true });
+        }
+      }
+
+      navigate('/home');
+    } catch (error) {
+      const err = error as FirestoreError;
+      console.log(err.message);
+    }
+  };
 
   const fetchProduct = async () => {
     try {
@@ -136,13 +141,22 @@ function Product() {
     if (!product && queryProductUid !== '') {
       fetchProduct();
     }
+    if (product && queryProductUid == '') {
+      setProduct(null);
+    }
   }, [queryProductUid]);
 
   useEffect(() => {
     if (product) {
       reset(product);
+    } else {
+      reset(productDefaultValues);
     }
   }, [product]);
+
+  useEffect(() => {
+    reset(productDefaultValues);
+  }, [productDefaultValues]);
 
   return (
     <div className="product-container">

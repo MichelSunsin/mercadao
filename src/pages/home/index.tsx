@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Drawer } from 'antd';
-import { orderBy, where } from 'firebase/firestore';
+import { orderBy, QueryConstraint, where } from 'firebase/firestore';
 
 import useFetch from 'hooks/useFetch';
 import { ProductCard, Cart, Header } from 'components';
@@ -10,6 +10,7 @@ import './styles.scss';
 
 function Home() {
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -22,12 +23,21 @@ function Home() {
 
   const { data: categories } = useFetch('categories', categoryQueryFilter);
 
-  const productQueryFilter = useMemo(
-    () => (selectedCategory ? [where('category', '==', selectedCategory)] : []),
-    [selectedCategory],
+  const productQueryFilter: QueryConstraint[] = useMemo(
+    () => [
+      ...(debouncedSearch != '' ? [where('name', '==', debouncedSearch)] : []),
+      ...(selectedCategory ? [where('category', '==', selectedCategory)] : []),
+    ],
+    [debouncedSearch, selectedCategory],
   );
 
   const { data: products } = useFetch('products', productQueryFilter);
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => setDebouncedSearch(search), 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [search]);
 
   return (
     <>

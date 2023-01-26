@@ -6,6 +6,7 @@ export type TCartProduct = {
 
 export type TCartState = {
   products: TCartProduct[];
+  productCount: number;
   total: number;
 };
 

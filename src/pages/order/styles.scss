@@ -75,6 +75,14 @@
 
           input {
             margin-right: 3px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          label:hover {
+            cursor: pointer;
           }
         }
       }

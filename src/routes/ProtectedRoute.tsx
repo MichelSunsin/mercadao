@@ -13,13 +13,13 @@ const ProtectedRoute = ({ children }: any) => {
     if (user && !state.user) {
       const response = await getDoc(doc(firestore, 'users', user.uid));
       setUser(response.data() as TUser);
-    } else {
+    } else if (!user && state.user) {
+      clearUser();
       <Navigate to={'/login'} state={{ from: location }} replace />;
     }
   });
 
   if (!auth.currentUser) {
-    // clearUser();
     return <Navigate to={'/login'} state={{ from: location }} replace />;
   }
 

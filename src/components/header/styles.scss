@@ -32,9 +32,29 @@
       color: white;
       font-size: 32px;
       background-color: inherit;
+      position: relative;
 
       & + button {
         margin-left: 5px;
+      }
+
+      & > .notification-badge {
+        /* circle shape, size and position */
+        position: absolute;
+        right: -0.2em;
+        top: -0.2em;
+        min-width: 1.3em;
+        height: 1.3em;
+        border-radius: 0.8em;
+        background-color: red;
+        z-index: 2;
+
+        /* number size and position */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.5em;
+        color: white;
       }
     }
   }

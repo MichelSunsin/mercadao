@@ -5,6 +5,7 @@ import {
   doc,
   FirestoreError,
   getFirestore,
+  Timestamp,
 } from 'firebase/firestore';
 
 import config from 'api/firebase-config';
@@ -29,7 +30,7 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
   );
 
   const [paymentOption, setPaymentOption] = useState(0);
-  const paymentMethods = ['Dinheiro', 'Cartão de crédito'];
+  const paymentMethods = ['PIX', 'Cartão de crédito', 'Dinheiro'];
 
   const products = selectedOrder?.products.length
     ? selectedOrder?.products
@@ -47,6 +48,8 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
           sellerUids: [
             ...new Set(cartState.products.map((product) => product.sellerUid)),
           ],
+          confirmedSellerUids: [],
+          createdAt: Timestamp.fromDate(new Date()),
         };
 
         await addDoc(collection(firestore, 'orders'), newOrder);
@@ -65,24 +68,18 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
         <>
           <h2 className="title">Escolha seu meio de pagamento</h2>
           <div className="payment-options-container">
-            <div className="payment-option">
-              <input
-                type="radio"
-                value={0}
-                checked={paymentOption === 0}
-                onChange={(e) => setPaymentOption(+e.target.value)}
-              />
-              <label>{paymentMethods[0]}</label>
-            </div>
-            <div className="payment-option">
-              <input
-                type="radio"
-                value={1}
-                checked={paymentOption === 1}
-                onChange={(e) => setPaymentOption(+e.target.value)}
-              />
-              <label>{paymentMethods[1]}</label>
-            </div>
+            {paymentMethods.map((paymentMethod, index) => (
+              <div className="payment-option" key={paymentMethod}>
+                <input
+                  type="radio"
+                  value={index}
+                  checked={paymentOption === index}
+                  onChange={(e) => setPaymentOption(+e.target.value)}
+                  id={paymentMethod}
+                />
+                <label htmlFor={paymentMethod}>{paymentMethod}</label>
+              </div>
+            ))}
           </div>
           <div className="button-container">
             <Button onClick={() => setStage('summary')}>Revisar pedido</Button>

@@ -10,6 +10,7 @@ import cartReducer from './cartReducer';
 const CartProvider = ({ children }: any) => {
   const initialState: TCartState = {
     products: [],
+    productCount: 0,
     total: 0,
   };
 

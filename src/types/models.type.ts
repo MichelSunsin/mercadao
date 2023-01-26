@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { TCartProduct } from './CartProvider.type';
 
 export type TCategory = {
@@ -32,4 +33,6 @@ export type TOrder = {
   deliveryAddress: string;
   buyerUid: string;
   sellerUids: string[];
+  confirmedSellerUids: string[];
+  createdAt: Timestamp;
 };

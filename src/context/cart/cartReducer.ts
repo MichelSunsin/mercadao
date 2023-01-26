@@ -19,6 +19,7 @@ export default (state: TCartState, action: { type: string; payload?: any }) => {
             },
             ...state.products.slice(existingCartItemIndex + 1),
           ],
+          productCount: state.productCount + 1,
         };
 
         return newState;
@@ -26,12 +27,14 @@ export default (state: TCartState, action: { type: string; payload?: any }) => {
       return {
         ...state,
         products: [{ ...action.payload, quantity: 1 }, ...state.products],
+        productCount: state.productCount + 1,
       };
     }
     case CLEAR_CART: {
       return {
         ...state,
         products: [],
+        productCount: 0,
         total: 0,
       };
     }

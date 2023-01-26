@@ -28,22 +28,47 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
   const [orders, setOrders] = useState<TOrder[]>([]);
   const status = ['Aberta', 'Enviada', 'Finalizada'];
 
-  const handleStatusUpdate = async (order: TOrder) => {
-    if (order.uid) {
+  function shouldRenderDeliverButton(order: TOrder) {
+    return (
+      !state.user?.deliveryAddress &&
+      order.status === OrderStatus.Aberta &&
+      !order.confirmedSellerUids.includes(state.user?.uid ?? '')
+    );
+  }
+
+  async function handleStatusUpdate(order: TOrder) {
+    if (order.uid && state.user) {
       try {
-        await setDoc(doc(firestore, 'orders', order.uid), {
-          ...order,
-          status: order.status + 1,
-        });
+        if (state.user.deliveryAddress) {
+          await setDoc(doc(firestore, 'orders', order.uid), {
+            ...order,
+            status: order.status + 1,
+          });
+        } else {
+          const newOrder: TOrder = {
+            ...order,
+            confirmedSellerUids: [...order.confirmedSellerUids, state.user.uid],
+          };
+
+          if (
+            newOrder.confirmedSellerUids.length === newOrder.sellerUids.length
+          ) {
+            newOrder.status = newOrder.status + 1;
+          }
+
+          await setDoc(doc(firestore, 'orders', order.uid), {
+            ...newOrder,
+          });
+        }
       } catch (error) {
         const err = error as FirestoreError;
         console.log(err.message);
       }
     }
-  };
+  }
 
-  const renderStatusButton = (order: TOrder) => {
-    if (order.status === OrderStatus.Aberta && !state.user?.deliveryAddress) {
+  function renderStatusButton(order: TOrder) {
+    if (shouldRenderDeliverButton(order)) {
       return <Button onClick={() => handleStatusUpdate(order)}>Enviar</Button>;
     }
     if (order.status === OrderStatus.Enviada && state.user?.deliveryAddress) {
@@ -53,39 +78,37 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
         </Button>
       );
     }
-  };
+  }
 
   useEffect(() => {
-    if (state.user) {
-      let constraints: QueryConstraint = where(
-        'sellerUids',
-        'array-contains',
-        state.user?.uid,
-      );
+    let constraints: QueryConstraint = where(
+      'sellerUids',
+      'array-contains',
+      state.user?.uid,
+    );
 
-      // Vendor
-      if (state.user.deliveryAddress) {
-        constraints = where('buyerUid', '==', state.user?.uid);
-      }
+    // Buyer
+    if (state.user?.deliveryAddress) {
+      constraints = where('buyerUid', '==', state.user?.uid);
+    }
 
-      const q = query(collection(firestore, 'orders'), constraints);
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let dbOrders: TOrder[] = [];
+    const q = query(collection(firestore, 'orders'), constraints);
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let dbOrders: TOrder[] = [];
 
-        querySnapshot.forEach((doc) => {
-          dbOrders.push({
-            ...(doc.data() as TOrder),
-            uid: doc.id,
-          });
+      querySnapshot.forEach((doc) => {
+        dbOrders.push({
+          ...(doc.data() as TOrder),
+          uid: doc.id,
         });
-
-        setOrders(dbOrders);
       });
 
-      return function cleanUp() {
-        unsubscribe();
-      };
-    }
+      setOrders(dbOrders);
+    });
+
+    return function cleanUp() {
+      unsubscribe();
+    };
   }, []);
 
   return (
@@ -96,7 +119,11 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
           <div className="order-listing" key={order.uid}>
             <div className="align-left">
               <h2>Id do pedido: {order.uid}</h2>
-              Status: {status[order.status]}
+              <span>Status: {status[order.status]}</span>
+              <br />
+              <span>
+                Pedido feito em {order.createdAt.toDate().toLocaleDateString()}
+              </span>
             </div>
             <div className="align-right">
               <Button onClick={() => setSelectedOrder(order)}>

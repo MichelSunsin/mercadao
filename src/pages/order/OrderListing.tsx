@@ -26,12 +26,12 @@ type OrderListingProps = {
 function OrderListing({ setSelectedOrder }: OrderListingProps) {
   const { state } = useAuth();
   const [orders, setOrders] = useState<TOrder[]>([]);
-  const status = ['Aberta', 'Enviada', 'Finalizada'];
+  const status = ['Aberto', 'Enviado', 'Finalizado'];
 
   function shouldRenderDeliverButton(order: TOrder) {
     return (
       !state.user?.deliveryAddress &&
-      order.status === OrderStatus.Aberta &&
+      order.status === OrderStatus.Aberto &&
       !order.confirmedSellerUids.includes(state.user?.uid ?? '')
     );
   }
@@ -71,7 +71,7 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
     if (shouldRenderDeliverButton(order)) {
       return <Button onClick={() => handleStatusUpdate(order)}>Enviar</Button>;
     }
-    if (order.status === OrderStatus.Enviada && state.user?.deliveryAddress) {
+    if (order.status === OrderStatus.Enviado && state.user?.deliveryAddress) {
       return (
         <Button onClick={() => handleStatusUpdate(order)}>
           Confirmar entrega
@@ -129,7 +129,7 @@ function OrderListing({ setSelectedOrder }: OrderListingProps) {
               <Button onClick={() => setSelectedOrder(order)}>
                 Ver detalhes
               </Button>
-              {order.status !== OrderStatus.Finalizada &&
+              {order.status !== OrderStatus.Finalizado &&
                 renderStatusButton(order)}
             </div>
           </div>

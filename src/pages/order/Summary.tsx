@@ -40,7 +40,7 @@ function Summary({ selectedOrder, setSelectedOrder }: SummaryProps) {
     if (authState.user) {
       try {
         const newOrder: TOrder = {
-          status: OrderStatus.Aberta,
+          status: OrderStatus.Aberto,
           products: cartState.products,
           paymentMethod: paymentOption,
           deliveryAddress: authState.user?.deliveryAddress ?? '',

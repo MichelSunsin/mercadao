@@ -9,9 +9,9 @@ import OrderListing from './OrderListing';
 import './styles.scss';
 
 export enum OrderStatus {
-  Aberta = 0,
-  Enviada = 1,
-  Finalizada = 2,
+  Aberto = 0,
+  Enviado = 1,
+  Finalizado = 2,
 }
 
 function Order() {
